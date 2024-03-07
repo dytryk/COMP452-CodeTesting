@@ -24,6 +24,8 @@ public class ComputerGuessesPanel extends JPanel {
     private int upperBound; // correct number is <= upperBound
     private int lowerBound; // correct number is >= lowerBound
 
+
+
     public ComputerGuessesPanel(JPanel cardsPanel, Consumer<GameResult> gameFinishedCallback){
         numGuesses = 0;
         upperBound = 1000;
@@ -93,5 +95,4 @@ public class ComputerGuessesPanel extends JPanel {
             }
         });
     }
-
 }

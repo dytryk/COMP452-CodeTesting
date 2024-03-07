@@ -82,17 +82,21 @@ public class GameOverPanel extends JPanel {
 
         if(result.humanWasPlaying){
             // write stats to file
-            try(CSVWriter writer = new CSVWriter(new FileWriter(StatsFile.FILENAME, true))) {
+            writeGameResults();
+        }
+    }
 
-                String [] record = new String[2];
-                record[0] = LocalDateTime.now().toString();
-                record[1] = Integer.toString(result.numGuesses);
+    public void writeGameResults() {
+        try(CSVWriter writer = new CSVWriter(new FileWriter(StatsFile.FILENAME, true))) {
+
+            String [] record = new String[2];
+            record[0] = LocalDateTime.now().toString();
+            record[1] = Integer.toString(this.gameResult.numGuesses);
 
                 writer.writeNext(record);
-            } catch (IOException e) {
-                // NOTE: In a full implementation, we would log this error and possibly alert the user
-                // NOTE: For this project, you do not need unit tests for handling this exception.
-            }
+        } catch (IOException e) {
+            // NOTE: In a full implementation, we would log this error and possibly alert the user
+            // NOTE: For this project, you do not need unit tests for handling this exception.
         }
     }
 }
