@@ -12,6 +12,7 @@ import java.util.function.Consumer;
  */
 
 // this is a test comment to see if git is working
+    // typed from peter
 
 public class ComputerGuessesPanel extends JPanel {
 
