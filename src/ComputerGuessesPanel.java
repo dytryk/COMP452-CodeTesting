@@ -10,6 +10,9 @@ import java.util.function.Consumer;
  *
  * TODO: refactor this class
  */
+
+// this is a test comment to see if git is working
+
 public class ComputerGuessesPanel extends JPanel {
 
     private int numGuesses;
