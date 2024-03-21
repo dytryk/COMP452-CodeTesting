@@ -85,17 +85,17 @@ public class ComputerGuessesPanel extends JPanel {
         this.add(higherBtn);
         higherBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-
-        this.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentShown(java.awt.event.ComponentEvent e) {
-                numGuesses = 0;
-                upperBound = 1000;
-                lowerBound = 1;
-
-                lastGuess = (lowerBound + upperBound + 1) / 2;
-                guessMessage.setText("I guess " + lastGuess + ".");
-            }
-        });
+        simpleAddComponentListener(guessMessage);
+//        this.addComponentListener(new java.awt.event.ComponentAdapter() {
+//            public void componentShown(java.awt.event.ComponentEvent e) {
+//                numGuesses = 0;
+//                upperBound = 1000;
+//                lowerBound = 1;
+//
+//                lastGuess = (lowerBound + upperBound + 1) / 2;
+//                guessMessage.setText("I guess " + lastGuess + ".");
+//            }
+//        });
     }
 
     void higherButtonListener(JLabel guessMessage, JButton btn) {
@@ -128,6 +128,19 @@ public class ComputerGuessesPanel extends JPanel {
 
             CardLayout cardLayout = (CardLayout) cardsPanel.getLayout();
             cardLayout.show(cardsPanel, ScreenID.GAME_OVER.name());
+        });
+    }
+
+    void simpleAddComponentListener(JLabel guessMessage) {
+        this.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent e) {
+                numGuesses = 0;
+                upperBound = 1000;
+                lowerBound = 1;
+
+                lastGuess = (lowerBound + upperBound + 1) / 2;
+                guessMessage.setText("I guess " + lastGuess + ".");
+            }
         });
     }
 }
