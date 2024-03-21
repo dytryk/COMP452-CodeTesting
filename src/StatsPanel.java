@@ -32,45 +32,47 @@ public class StatsPanel extends JPanel {
         this.add(Box.createRigidArea(new Dimension(0,40)));
 
         resultsPanel = new JPanel();
-        resultsLabels = new ArrayList<>();
-        resultsPanel.setLayout(new GridLayout(0, 2));
-        resultsPanel.add(new JLabel("Guesses"));
-        resultsPanel.add(new JLabel("Games"));
-        for(int binIndex=0; binIndex<BIN_EDGES.length; binIndex++){
-            String binName;
-            if(binIndex == BIN_EDGES.length-1){
-                // last bin
-                binName = BIN_EDGES[binIndex] + " or more";
-            }
-            else{
-                int upperBound = BIN_EDGES[binIndex+1] - 1;
-                if(upperBound > BIN_EDGES[binIndex]){
-                    binName = BIN_EDGES[binIndex] + "-" + upperBound;
-                }
-                else{
-                    binName = Integer.toString(BIN_EDGES[binIndex]);
-                }
-            }
-
-            resultsPanel.add(new JLabel(binName));
-            JLabel result = new JLabel("--");
-            resultsLabels.add(result);
-            resultsPanel.add(result);
-        }
-
-        resultsPanel.setMinimumSize(new Dimension(120, 120));
-        this.add(resultsPanel);
-        resultsPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        updateResultsPanel();
+        setNewResultsPanel(resultsPanel);
+//        resultsLabels = new ArrayList<>();
+//        resultsPanel.setLayout(new GridLayout(0, 2));
+//        resultsPanel.add(new JLabel("Guesses"));
+//        resultsPanel.add(new JLabel("Games"));
+//        for(int binIndex=0; binIndex<BIN_EDGES.length; binIndex++){
+//            String binName;
+//            if(binIndex == BIN_EDGES.length-1){
+//                // last bin
+//                binName = BIN_EDGES[binIndex] + " or more";
+//            }
+//            else{
+//                int upperBound = BIN_EDGES[binIndex+1] - 1;
+//                if(upperBound > BIN_EDGES[binIndex]){
+//                    binName = BIN_EDGES[binIndex] + "-" + upperBound;
+//                }
+//                else{
+//                    binName = Integer.toString(BIN_EDGES[binIndex]);
+//                }
+//            }
+//
+//            resultsPanel.add(new JLabel(binName));
+//            JLabel result = new JLabel("--");
+//            resultsLabels.add(result);
+//            resultsPanel.add(result);
+//        }
+//
+//        resultsPanel.setMinimumSize(new Dimension(120, 120));
+//        this.add(resultsPanel);
+//        resultsPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+//        updateResultsPanel();
 
         this.add(Box.createVerticalGlue());
 
         JButton quit = new JButton("Back to Home");
-        quit.addActionListener(e -> {
-            // See itemStateChanged in https://docs.oracle.com/javase/tutorial/uiswing/examples/layout/CardLayoutDemoProject/src/layout/CardLayoutDemo.java
-            CardLayout cardLayout = (CardLayout) cardsPanel.getLayout();
-            cardLayout.show(cardsPanel, ScreenID.HOME.name());
-        });
+        quitActionListener(quit, cardsPanel);
+//        quit.addActionListener(e -> {
+//            // See itemStateChanged in https://docs.oracle.com/javase/tutorial/uiswing/examples/layout/CardLayoutDemoProject/src/layout/CardLayoutDemo.java
+//            CardLayout cardLayout = (CardLayout) cardsPanel.getLayout();
+//            cardLayout.show(cardsPanel, ScreenID.HOME.name());
+//        });
         this.add(quit);
         quit.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -95,6 +97,97 @@ public class StatsPanel extends JPanel {
 
         GameStats stats = new StatsFile();
 
+        updateResultsPanelLogic(stats);
+//        for(int binIndex=0; binIndex<BIN_EDGES.length; binIndex++){
+//            final int lowerBound = BIN_EDGES[binIndex];
+//            int numGames = 0;
+//
+//            if(binIndex == BIN_EDGES.length-1){
+//                // last bin
+//                // Sum all the results from lowerBound on up
+//                for(int numGuesses=lowerBound; numGuesses<stats.maxNumGuesses(); numGuesses++){
+//                    numGames += stats.numGames(numGuesses);
+//                }
+//            }
+//            else{
+//                int upperBound = BIN_EDGES[binIndex+1];
+//                for(int numGuesses=lowerBound; numGuesses <= upperBound; numGuesses++) {
+//                    numGames += stats.numGames(numGuesses);
+//                }
+//            }
+//
+//            JLabel resultLabel = resultsLabels.get(binIndex);
+//            resultLabel.setText(Integer.toString(numGames));
+//        }
+    }
+
+    void setNewResultsPanel(JPanel resultsPanel) {
+        resultsLabels = new ArrayList<>();
+        resultsPanel.setLayout(new GridLayout(0, 2));
+        resultsPanel.add(new JLabel("Guesses"));
+        resultsPanel.add(new JLabel("Games"));
+        setNewResultsPanelLogic();
+//        for(int binIndex=0; binIndex<BIN_EDGES.length; binIndex++){
+//            String binName;
+//            if(binIndex == BIN_EDGES.length-1){
+//                // last bin
+//                binName = BIN_EDGES[binIndex] + " or more";
+//            }
+//            else{
+//                int upperBound = BIN_EDGES[binIndex+1] - 1;
+//                if(upperBound > BIN_EDGES[binIndex]){
+//                    binName = BIN_EDGES[binIndex] + "-" + upperBound;
+//                }
+//                else{
+//                    binName = Integer.toString(BIN_EDGES[binIndex]);
+//                }
+//            }
+//
+//            resultsPanel.add(new JLabel(binName));
+//            JLabel result = new JLabel("--");
+//            resultsLabels.add(result);
+//            resultsPanel.add(result);
+//        }
+
+        resultsPanel.setMinimumSize(new Dimension(120, 120));
+        this.add(resultsPanel);
+        resultsPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        updateResultsPanel();
+    }
+
+    void quitActionListener(JButton btn, JPanel cardsPanel) {
+        btn.addActionListener(e -> {
+            // See itemStateChanged in https://docs.oracle.com/javase/tutorial/uiswing/examples/layout/CardLayoutDemoProject/src/layout/CardLayoutDemo.java
+            CardLayout cardLayout = (CardLayout) cardsPanel.getLayout();
+            cardLayout.show(cardsPanel, ScreenID.HOME.name());
+        });
+    }
+
+    void setNewResultsPanelLogic() {
+        for(int binIndex=0; binIndex<BIN_EDGES.length; binIndex++){
+            String binName;
+            if(binIndex == BIN_EDGES.length-1){
+                // last bin
+                binName = BIN_EDGES[binIndex] + " or more";
+            }
+            else{
+                int upperBound = BIN_EDGES[binIndex+1] - 1;
+                if(upperBound > BIN_EDGES[binIndex]){
+                    binName = BIN_EDGES[binIndex] + "-" + upperBound;
+                }
+                else{
+                    binName = Integer.toString(BIN_EDGES[binIndex]);
+                }
+            }
+
+            resultsPanel.add(new JLabel(binName));
+            JLabel result = new JLabel("--");
+            resultsLabels.add(result);
+            resultsPanel.add(result);
+        }
+    }
+
+    void updateResultsPanelLogic(GameStats stats) {
         for(int binIndex=0; binIndex<BIN_EDGES.length; binIndex++){
             final int lowerBound = BIN_EDGES[binIndex];
             int numGames = 0;
