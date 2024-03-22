@@ -41,4 +41,8 @@ public class HumanGuessesGame {
     boolean isDone(){
         return gameIsDone;
     }
+
+    int getTarget() {
+        return target;
+    }
 }
