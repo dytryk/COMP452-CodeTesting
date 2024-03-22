@@ -1,6 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import com.opencsv.CSVReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 /**
  * Displays statistics about how many guesses the person took during past games
@@ -58,12 +62,20 @@ public class StatsPanel extends JPanel {
         }
     }
 
-    private void updateResultsPanel(){
+    private void updateResultsPanel() {
         clearResults();
 
-        GameStats stats = new StatsFile();
+        try (FileReader fileReader = new FileReader(StatsFile.FILENAME);
+             CSVReader csvReader = new CSVReader(fileReader)) {
+            // Create a new instance of StatsFile with dependency injection
+            StatsFile statsFile = new StatsFile(csvReader, LocalDateTime.now());
 
-        updateResultsPanelLogic(stats);
+            // Pass the statsFile to the updateResultsPanelLogic method
+            updateResultsPanelLogic(statsFile);
+        } catch (IOException e) {
+            // Handle file IO exception
+            e.printStackTrace();
+        }
     }
 
     void setNewResultsPanel(JPanel resultsPanel) {

@@ -69,22 +69,6 @@ public class GameOverPanel extends JPanel {
      * Sets the game results, updates the UI, and saves results to the log file (if human was playing)
      */
     // TODO: refactor this method
-//    public void setGameResults(GameResult result){
-//        this.gameResult = result;
-//
-//        answerTxt.setText("The answer was " + result.correctValue + ".");
-//        if(result.numGuesses == 1){
-//            numGuessesTxt.setText((result.humanWasPlaying ? "You" : "I") + " guessed it on the first try!");
-//        }
-//        else {
-//            numGuessesTxt.setText("It took " + (result.humanWasPlaying ? "you" : "me") + " " + result.numGuesses + " guesses.");
-//        }
-//
-//        if(result.humanWasPlaying){
-//            // write stats to file
-//            writeGameResults();
-//        }
-//    }
 
     public void setGameResults(int correctValue, int numGuesses, Boolean humanWasPlaying){
         this.gameResult = new GameResult(humanWasPlaying, correctValue, numGuesses);
